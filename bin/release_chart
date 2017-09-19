@@ -114,7 +114,7 @@ msg "Release helm chart"
 helmCmd="helm upgrade $release $chart --install $repoUrl $version $customFlags --force --reset-values --recreate-pods --namespace $namespace $customVals"
 
 msg "Running helm upgrade (--install) command ..."
-msg $helmCmd
+msg "$helmCmd"
 
 # execute helm command
 eval "$helmCmd"
