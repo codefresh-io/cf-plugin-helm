@@ -23,9 +23,9 @@ steps:
 
 ## Environment Variables
 
-- (required) `CHART_NAME` - Helm chart name
-- (required) `RELEASE_NAME` - Helm release name
-- (required) `KUBE_CONFIG` - Kubernetes configuration file (single line base64 encoded string)
+- **required** `CHART_NAME` - Helm chart name
+- **required** `RELEASE_NAME` - Helm release name
+- **required** `KUBE_CONFIG` - Kubernetes configuration file (single line base64 encoded string)
 - `NAMESPACE` - target Kubernetes namespace
 - `CHART_VERSION` - application chart version to install
 - `CHART_REPO_URL` - Helm chart repository URL
