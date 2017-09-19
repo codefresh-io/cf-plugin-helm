@@ -1,0 +1,120 @@
+#!/bin/sh
+
+set -e 
+
+# helper functions
+msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
+err() { echo -e "\e[31mERR ---> $1\e[0m" ; exit 1; }
+check() { command -v "$1" >/dev/null 2>&1 || err "$1 utility is requiered!"; }
+
+# process custome variables
+processCustomVals() {
+	local resultedArgs=""
+	local vars=$(env | awk -F '=' '{print $1}' | grep "^custom")
+
+	for var in $vars
+	do
+		local varName=$(echo $var | sed 's/custom_//' | sed 's/_/./g')
+		local varValue=$(eval "echo \$$var")
+		resultedArgs="$resultedArgs --set $varName=$varValue"
+	done
+
+	echo "$resultedArgs"
+}
+
+# wait helm to be ready
+waitForHelm() {
+	while true; do
+		status=$(kubectl get po -l app=helm -l name=tiller --show-all=false -o=custom-columns=STATUS:.status.phase --no-headers=true -nkube-system)
+
+		msg "Helm status = $status"
+		[ "$status" = "Running" ] && break
+
+		msg "Sleeping 3 seconds ..."
+		sleep 3
+
+	done
+}
+
+# add custom helm flags
+processCustomFlags() {
+	local flags=""
+
+	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
+	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
+	[ ! -z "$TIMEOUT" ] && flags="$flags --timeout $TIMEOUT"
+
+	if [ "$WAIT" == "true" ] || [ -z "$WAIT" ]; then
+		flags="$flags --wait"
+	fi
+
+	echo "$flags"
+}
+
+
+# =---
+# MAIN
+# =---
+
+check kubectl
+
+check helm
+
+# get chart name (required)
+if [ -z "$CHART_NAME" ]; then
+  err "Please, specify Helm Chart with CHART_NAME environment variable"
+  exit 1
+fi
+chart="${CHART_NAME}"
+
+# get release name (required)
+if [ -z "$RELEASE_NAME" ]; then
+  err "Please, specify Helm Release name with RELEASE_NAME environment variable"
+  exit 1
+fi
+release="${RELEASE_NAME}"
+
+if [ -z "$KUBE_CONFIG" ]; then
+  err "Please, pass Kubernetes config file to KUBE_CONFIG environment variable, encoded as base64 single line"
+else
+  msg "Using passed .kube/config file"
+  mkdir -p ~/.kube
+  echo -n "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+  msg "Skip TLS verify for K8s cluster"
+  kubectl config set-cluster $(kubectl config current-context) --insecure-skip-tls-verify=true
+fi
+
+msg "Install Helm Tiller or upgrade, if needed"
+helm init --upgrade
+
+msg "Waiting for Helm to be ready ..."
+waitForHelm
+
+sleep 3
+msg "Helm version"
+helm version
+
+customFlags=$(processCustomFlags)
+customVals=$(processCustomVals)
+
+# target namespace
+namespace="${NAMESPACE:-default}"
+
+# set chart version flag
+if [ ! -z "${CHART_VERSION}" ]; then
+  version="--version ${CHART_VERSION}"
+fi
+
+# set chart repo flag
+if [ ! -z "${CHART_REPO_URL}" ]; then
+  repoUrl="--repo ${CHART_REPO_URL}"
+fi
+
+msg "Release helm chart"
+helmCmd="helm upgrade $release $chart --install $repoUrl $version $customFlags --force --reset-values --recreate-pods --namespace $namespace $customVals"
+
+msg "Running helm upgrade (--install) command ..."
+msg $helmCmd
+
+# execute helm command
+eval "$helmCmd"

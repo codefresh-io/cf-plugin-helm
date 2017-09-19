@@ -1,0 +1,27 @@
+---
+version: '1.0'
+
+steps:
+  build:
+    type: build
+    image_name: codefresh/plugin-helm
+  
+  push_branch:
+    type: push
+    title: "Pushing plugin-helm:branch ..."
+    description: Push Codefresh Plugin-Helm image to DockerHub
+    candidate: ${{build}}
+    tag: ${{CF_BRANCH}}
+    image_name: codefresh/plugin-helm
+
+  push_latest:
+    type: push
+    title: "Pushing plugin-helm:latest ..."
+    description: Push Codefresh Plugin-Helm image to the DockerHub
+    candidate: ${{main_build}}
+    tag: latest
+    image_name: codefresh/plugin-helm
+    when:
+      branch:
+        only:
+          - master
