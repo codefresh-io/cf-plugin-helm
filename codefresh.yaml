@@ -18,7 +18,7 @@ steps:
     type: push
     title: "Pushing plugin-helm:latest ..."
     description: Push Codefresh Plugin-Helm image to the DockerHub
-    candidate: ${{main_build}}
+    candidate: ${{build}}
     tag: latest
     image_name: codefresh/plugin-helm
     when:
