@@ -15,7 +15,7 @@ steps:
   ...
 
   release_to_env:
-    image: codefresh/plugin-helm
+    image: codefresh/plugin-helm:2.7.2
 
   ...
 
