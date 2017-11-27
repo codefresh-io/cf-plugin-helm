@@ -74,14 +74,11 @@ if [ -z "$RELEASE_NAME" ]; then
 fi
 release="${RELEASE_NAME}"
 
-if [ -z "$KUBE_CONFIG" ]; then
-  err "Please, pass Kubernetes config file to KUBE_CONFIG environment variable, encoded as base64 single line"
+if [ -z "$KUBE_CONTEXT" ]; then
+  err "Please, set Kubernetes context. Use name from Codefresh Integrations page."
 else
-  msg "Using passed .kube/config file"
-  mkdir -p ~/.kube
-  echo -n "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-  msg "Skip TLS verify for K8s cluster"
-  kubectl config set-cluster $(kubectl config current-context) --insecure-skip-tls-verify=true
+  msg "Using ${KUBE_CONTEXT} context"
+  kubectl config use-context ${KUBE_CONTEXT}
 fi
 
 msg "Install Helm Tiller or upgrade, if needed"

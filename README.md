@@ -25,7 +25,7 @@ steps:
 
 - **required** `CHART_NAME` - Helm chart name
 - **required** `RELEASE_NAME` - Helm release name
-- **required** `KUBE_CONFIG` - Kubernetes configuration file (single line base64 encoded string)
+- **required** `KUBE_CONTEXT` - Kubernetes context to use
 - `NAMESPACE` - target Kubernetes namespace
 - `CHART_VERSION` - application chart version to install
 - `CHART_REPO_URL` - Helm chart repository URL
@@ -36,10 +36,4 @@ steps:
 
 ## Kubernetes Configuration
 
-Currently, you need to pass a Kubernetes configuration file as a single line string, using `KUBE_CONFIG` environment variable. Please, make sure to use a valid [Kubernetes configuration file](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/) with at least one context and `current-context` set to one you want to use.
-
-Use following command to generate single line, base 64 encoded string:
-
-```sh
-$ KUBE_CONFIG=$(cat ~/.kube/my_cluster_config | base64 -e | tr -d '\r\n')
-```
+Add Kubernetes integration to Codefresh: `> Account Settings > Integration > Kubernetes`. From now on, you can use added Kubernetes cluster in Codefresh pipeline, addressing its context by the name you see in `Clusters` menu.

@@ -5,6 +5,8 @@ steps:
   build:
     type: build
     image_name: codefresh/plugin-helm
+    build_arguments:
+      - HELM_VERSION=${{HELM_VERSION}}
   
   push_branch:
     type: push
@@ -19,7 +21,7 @@ steps:
     title: "Pushing plugin-helm:latest ..."
     description: Push Codefresh Plugin-Helm image to the DockerHub
     candidate: ${{build}}
-    tag: latest
+    tag: "${{HELM_VERSION}}"
     image_name: codefresh/plugin-helm
     when:
       branch:

@@ -1,6 +1,6 @@
 #------ helm ----
-ARG VERSION=latest
-FROM dtzar/helm-kubectl:${VERSION} as helm
+ARG HELM_VERSION=latest
+FROM dtzar/helm-kubectl:${HELM_VERSION} as helm
 
 #------- Deployer ------
 #
