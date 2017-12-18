@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e 
+set -e
 
 # helper functions
 msg() { echo -e "\e[32mINFO ---> $1\e[0m"; }
@@ -14,7 +14,7 @@ processCustomVals() {
 
 	for var in $vars
 	do
-		local varName=$(echo $var | sed 's/^custom_//gI' | sed 's/_/./g')
+		local varName=$(echo $var | sed 's/^custom_//gI' | sed 's/_/./g' | sed 's/\.\./_/g')
 		local varValue=$(eval "echo \$$var")
 		resultedArgs="$resultedArgs --set $varName=$varValue"
 	done
