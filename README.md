@@ -34,6 +34,26 @@ steps:
 - `WAIT` - block step execution till installation completed and all Kubernetes resources are ready
 - `TIMEOUT` - wait timeout (5min by default)
 
+### Overriding Helm Variables
+
+Codefresh Helm plugin supports overriding Helm variables.
+
+#### Naming Guide
+
+Prefix environment variable with `custom_` (or `CUSTOM_`) and replace any `.` character with `_`.
+
+```text
+# set ENV variable in Codefresh UI
+custom_myimage_pullPolicy=Always
+# Codefresh Helm plugin will add option below to the 'helm update --install' command
+--set myimage.pullPolicy=Always
+
+# Another example
+CUSTOM_redis_resources_requests_memory=256Mi
+# translates to ...
+--set redis.resources.requests.memory=256Mi
+```
+
 ## Kubernetes Configuration
 
 Add Kubernetes integration to Codefresh: `> Account Settings > Integration > Kubernetes`. From now on, you can use added Kubernetes cluster in Codefresh pipeline, addressing its context by the name you see in `Clusters` menu.

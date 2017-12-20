@@ -16,7 +16,7 @@ steps:
     tag: ${{CF_BRANCH}}
     image_name: codefresh/plugin-helm
 
-  push_latest:
+  push_versioned:
     type: push
     title: "Pushing plugin-helm:latest ..."
     description: Push Codefresh Plugin-Helm image to the DockerHub
@@ -27,3 +27,16 @@ steps:
       branch:
         only:
           - master
+
+  push_latest:
+    type: push
+    title: "Pushing plugin-helm:latest ..."
+    description: Push Codefresh Plugin-Helm image to the DockerHub
+    candidate: ${{build}}
+    tag: "latest"
+    image_name: codefresh/plugin-helm
+    when:
+      branch:
+        only:
+          - master
+ 

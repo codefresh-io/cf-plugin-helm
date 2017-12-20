@@ -14,7 +14,7 @@ processCustomVals() {
 
 	for var in $vars
 	do
-		local varName=$(echo $var | sed 's/custom_//' | sed 's/_/./g')
+		local varName=$(echo $var | sed 's/^custom_//gI' | sed 's/_/./g')
 		local varValue=$(eval "echo \$$var")
 		resultedArgs="$resultedArgs --set $varName=$varValue"
 	done
