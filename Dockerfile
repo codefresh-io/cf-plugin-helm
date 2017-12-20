@@ -4,7 +4,7 @@ FROM dtzar/helm-kubectl:${HELM_VERSION} as helm
 
 #------- Deployer ------
 #
-FROM alpine:3.6
+FROM alpine:3.7
 
 RUN apk add --no-cache ca-certificates
 
