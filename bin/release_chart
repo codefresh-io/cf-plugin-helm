@@ -104,11 +104,13 @@ fi
 
 # set chart repo flag
 if [ ! -z "${CHART_REPO_URL}" ]; then
-  repoUrl="--repo ${CHART_REPO_URL}"
+  helm repo add source ${CHART_REPO_URL}
+  helm update
+  chart="source/${chart}"
 fi
 
 msg "Release helm chart"
-helmCmd="helm upgrade $release $chart --install $repoUrl $version $customFlags --force --reset-values --recreate-pods --namespace $namespace $customVals"
+helmCmd="helm upgrade $release $chart --install $version $customFlags --force --reset-values --recreate-pods --namespace $namespace $customVals"
 
 msg "Running helm upgrade (--install) command ..."
 msg "$helmCmd"
