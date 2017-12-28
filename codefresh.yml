@@ -17,7 +17,6 @@ steps:
   semver:
     title: Export semversion
     image: cloudposse/build-harness:feature-helm-chart-ops
-    working_directory: ${{build-image}}
     commands:
       - make git:show
       - make semver:show
