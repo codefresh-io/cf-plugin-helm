@@ -33,6 +33,7 @@ steps:
 - `DEBUG` - print verbose install output
 - `WAIT` - block step execution till installation completed and all Kubernetes resources are ready
 - `TIMEOUT` - wait timeout (5min by default)
+- `CUSTOM_ARGS` - custom helm arguments for update command
 
 ### Overriding Helm Variables
 
