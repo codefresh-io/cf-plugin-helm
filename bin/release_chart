@@ -38,7 +38,7 @@ waitForHelm() {
 
 # add custom helm flags
 processCustomFlags() {
-	local flags="${CUSTOM_ARGS}"
+	local flags="${ARGS}"
 
 	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
 	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
