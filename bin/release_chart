@@ -82,14 +82,20 @@ else
 fi
 
 msg "Install Helm Tiller or upgrade, if needed"
-helm init --upgrade
+helm_version=$(echo $(helm version --client --short) | grep -Eo "v[0-9]\.[0-9]\.[0-9]")
+tiller_version=$(echo $(helm version --server --short) | grep -Eo "v[0-9]\.[0-9]\.[0-9]")
+if [ "$helm_version" != "$tiller_version" ]; then
+  msg "Helm version: $helm_version, different with tiller version: $tiller_version, upgrade tiller!"
+  helm init --upgrade --force-upgrade
+  msg "Waiting for Helm to be ready ..."
+  waitForHelm
 
-msg "Waiting for Helm to be ready ..."
-waitForHelm
-
-sleep 3
-msg "Helm version"
-helm version
+  sleep 3
+  msg "Helm version"
+  helm version
+else
+  msg "Helm version: $helm_version, same as tiller version: $tiller_version, no need upgrade."
+fi
 
 customFlags=$(processCustomFlags)
 customVals=$(processCustomVals)
