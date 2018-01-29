@@ -38,20 +38,18 @@ steps:
 
 Codefresh Helm plugin supports overriding Helm variables.
 
-#### Naming Guide
+To supply value file, add an environment variable with the name prefix of `CUSTOMFILE_` (case *in*sensitive), and the value should point to an existing values file.
+To override specific values, add an environment variable with the name prefix of `CUSTOM_` (case *in*sensitive), and replace any `.` characters in the name with `_`. The value should be the value for the variable.
 
-Prefix environment variable with `custom_` (or `CUSTOM_`) and replace any `.` character with `_`.
-
+Examples:
 ```text
-# set ENV variable in Codefresh UI
-custom_myimage_pullPolicy=Always
+CUSTOM_myimage_pullPolicy=Always
 # Codefresh Helm plugin will add option below to the 'helm update --install' command
 --set myimage.pullPolicy=Always
 
-# Another example
-CUSTOM_redis_resources_requests_memory=256Mi
-# translates to ...
---set redis.resources.requests.memory=256Mi
+CUSTOMFILE_prod='values-prod.yaml'
+# Codefresh Helm plugin will add option below to the 'helm update --install' command
+--values values-prod.yaml
 ```
 
 ## Kubernetes Configuration

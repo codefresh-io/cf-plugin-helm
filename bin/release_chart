@@ -10,8 +10,15 @@ check() { command -v "$1" >/dev/null 2>&1 || err "$1 utility is requiered!"; }
 # process custome variables
 processCustomVals() {
 	local resultedArgs=""
-	local vars=$(env | awk -F '=' '{print $1}' | grep "^custom")
+	
+	local vars=$(env | awk -F '=' '{print $1}' | grep -i "^customFile_")
+	for var in $vars
+	do
+		local varValue=$(eval "echo \$$var")
+		resultedArgs="$resultedArgs --values $varValue"
+	done
 
+	local vars=$(env | awk -F '=' '{print $1}' | grep -i "^custom_")
 	for var in $vars
 	do
 		local varName=$(echo $var | sed 's/^custom_//gI' | sed 's/_/./g' | sed 's/\.\./_/g')
