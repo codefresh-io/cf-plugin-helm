@@ -52,6 +52,14 @@ CUSTOMFILE_prod='values-prod.yaml'
 --values values-prod.yaml
 ```
 
+If a variable contains a `_`, replace the `_` character with `__`.
+
+```text
+custom_env_open_STORAGE__AMAZON__BUCKET=my-s3-bucket
+# translates to ...
+--set env.open.STORAGE_AMAZON_BUCKET=my-s3-bucket
+```
+
 ## Kubernetes Configuration
 
 Add Kubernetes integration to Codefresh: `> Account Settings > Integration > Kubernetes`. From now on, you can use added Kubernetes cluster in Codefresh pipeline, addressing its context by the name you see in `Clusters` menu.
