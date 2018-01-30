@@ -102,6 +102,8 @@ if [ "$helm_version" != "$tiller_version" ]; then
   helm version
 else
   msg "Helm version: $helm_version, same as tiller version: $tiller_version, no need upgrade."
+	msg "Initializing Helm."
+	helm init --client-only
 fi
 
 customFlags=$(processCustomFlags)
