@@ -49,6 +49,7 @@ processCustomFlags() {
 
 	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
 	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
+	[ "$RECREATE_PODS" == "true" ] && flags="$flags --recreate-pods"
 	[ ! -z "$TIMEOUT" ] && flags="$flags --timeout $TIMEOUT"
 
 	if [ "$WAIT" == "true" ] || [ -z "$WAIT" ]; then
@@ -123,7 +124,7 @@ if [ ! -z "${CHART_REPO_URL}" ]; then
 fi
 
 msg "Release helm chart"
-helmCmd="helm upgrade $release $chart --install $repoUrl $version $customFlags --force --reset-values --recreate-pods --namespace $namespace $customVals"
+helmCmd="helm upgrade $release $chart --install $repoUrl $version $customFlags --force --reset-values --namespace $namespace $customVals"
 
 msg "Running helm upgrade (--install) command ..."
 msg "$helmCmd"
