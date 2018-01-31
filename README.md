@@ -6,6 +6,18 @@ Use Codefresh [Helm](https://helm.sh) plugin to deploy a Helm chart into specifi
 
 Set required and optional environment variable and add the following step to your Codefresh pipeline:
 
+Example Variables:
+
+The example below will run `helm upgrade` using Helm chart with the name `mychart` located in `https://helmrepo.codefresh.io/codefresh/helm` Helm chart repository using the `myrelease` Helm release name against `mycluster` Kubernetes cluster in the `mynamespace` Kubernetes Namespace.
+
+```text
+CHART_NAME=mychart
+RELEASE_NAME=myrelease
+KUBE_CONTEXT=mycluster
+NAMESPACE=mynamespace
+CHART_REPO_URL=https://helmrepo.codefresh.io/codefresh/helm
+```
+
 ```yaml
 ---
 version: '1.0'
@@ -14,8 +26,16 @@ steps:
 
   ...
 
-  release_to_env:
-    image: codefresh/plugin-helm:2.7.2
+  Helm Upgrade:
+    title: Helm Upgrade
+    image: 'codefresh/plugin-helm:2.8.0'
+    environment:
+      - CHART_NAME=${{CHART_NAME}}
+      - RELEASE_NAME=${{RELEASE_NAME}}
+      - KUBE_CONTEXT=${{KUBE_CONTEXT}}
+      - NAMESPACE=${{NAMESPACE}}
+      - DEBUG_CHART=${{DEBUG_CHART}}
+      - CHART_REPO_URL=${{CHART_REPO_URL}}
 
   ...
 
@@ -23,16 +43,18 @@ steps:
 
 ## Environment Variables
 
-- **required** `CHART_NAME` - Helm chart name
-- **required** `RELEASE_NAME` - Helm release name
-- **required** `KUBE_CONTEXT` - Kubernetes context to use
-- `NAMESPACE` - target Kubernetes namespace
-- `CHART_VERSION` - application chart version to install
-- `CHART_REPO_URL` - Helm chart repository URL
-- `DRY_RUN` - do a "dry run" installation (do not install anything, useful for Debug)
-- `DEBUG` - print verbose install output
-- `WAIT` - block step execution till installation completed and all Kubernetes resources are ready
-- `TIMEOUT` - wait timeout (5min by default)
+| Variables      | Required | Default | Description                                                                             |
+|----------------|----------|---------|-----------------------------------------------------------------------------------------|
+| CHART_NAME     | YES      |         | Helm chart name                                                                         |
+| RELEASE_NAME   | YES      |         | Helm release name                                                                       |
+| KUBE_CONTEXT   | YES      |         | Kubernetes context to use (Custom Cluster Name in Codefresh)                            |
+| NAMESPACE      | NO       |         | Target Kubernetes namespace                                                             |
+| CHART_VERSION  | NO       |         | Helm chart version to install                                                           |
+| CHART_REPO_URL | NO       |         | Helm chart repository URL (Required unless code repository contains Helm chart)         |
+| DRY_RUN        | NO       |         | Do a "dry run" installation (do not install anything, useful for Debug)                 |
+| DEBUG          | NO       |         | Print verbose install output                                                            |
+| WAIT           | NO       |         | Block step execution till installation completed and all Kubernetes resources are ready |
+| TIMEOUT        | NO       | 5 Min   | Wait Timeout                                                                            |
 
 ### Overriding Helm Variables
 
