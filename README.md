@@ -51,8 +51,9 @@ steps:
 | NAMESPACE      | NO       |         | Target Kubernetes namespace                                                             |
 | CHART_VERSION  | NO       |         | Helm chart version to install                                                           |
 | CHART_REPO_URL | NO       |         | Helm chart repository URL (Required unless code repository contains Helm chart)         |
+| RECREATE_PODS  | NO       |         | Recreate pods                                                                           |
 | DRY_RUN        | NO       |         | Do a "dry run" installation (do not install anything, useful for Debug)                 |
-| DEBUG          | NO       |         | Print verbose install output                                                            |
+| DEBUG_CHART    | NO       |         | Print verbose install output                                                            |
 | WAIT           | NO       |         | Block step execution till installation completed and all Kubernetes resources are ready |
 | TIMEOUT        | NO       | 5 Min   | Wait Timeout                                                                            |
 | ARGS           | NO       |         | Custom helm arguments for update command
