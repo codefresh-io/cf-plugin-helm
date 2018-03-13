@@ -55,6 +55,8 @@ steps:
 | DEBUG          | NO       |         | Print verbose install output                                                            |
 | WAIT           | NO       |         | Block step execution till installation completed and all Kubernetes resources are ready |
 | TIMEOUT        | NO       | 5 Min   | Wait Timeout                                                                            |
+| ARGS           | NO       |         | Custom helm arguments for update command
+
 
 ### Overriding Helm Variables
 
