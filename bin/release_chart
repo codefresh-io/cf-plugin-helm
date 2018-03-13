@@ -45,7 +45,7 @@ waitForHelm() {
 
 # add custom helm flags
 processCustomFlags() {
-	local flags=""
+	local flags="${ARGS}"
 
 	[ "$DEBUG_CHART" == "true" ] && flags="$flags --debug"
 	[ "$DRY_RUN" == "true" ] && flags="$flags --dry-run"
@@ -121,7 +121,7 @@ fi
 # set chart repo flag
 if [ ! -z "${CHART_REPO_URL}" ]; then
   helm repo add source ${CHART_REPO_URL}
-  helm update
+  helm repo update
   chart="source/${chart}"
 fi
 
