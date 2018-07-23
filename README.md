@@ -2,6 +2,11 @@
 
 Use Codefresh [Helm](https://helm.sh) plugin to deploy a Helm chart into specified (by context) Kubernetes cluster. 
 
+NOTE: this plugin is now deprecated
+====================================
+It has been replaced for a new plugin called `cfstep-helm`.
+Please check https://github.com/codefresh-contrib/cfstep-helm and https://codefresh.io/docs/docs/new-helm/using-helm-in-codefresh-pipeline/ for more information.
+
 ## Usage
 
 Set required and optional environment variable and add the following step to your Codefresh pipeline:
