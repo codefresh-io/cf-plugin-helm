@@ -8,7 +8,7 @@ FROM alpine:3.7
 
 RUN apk add --no-cache curl ca-certificates bash jq
 
-COPY --from=helm /bin/helm /usr/bin/
+COPY --from=helm /bin/local/bin/helm /usr/bin/
 COPY --from=helm /usr/local/bin/kubectl /usr/bin/
 
 ADD bin/* /opt/bin/
